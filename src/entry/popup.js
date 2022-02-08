@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createStore } from 'vuex'
 import App from '../view/popup.vue'
+import { VuesticPlugin } from 'vuestic-ui'
 
 const store = createStore({
     state() {
@@ -15,4 +16,7 @@ const store = createStore({
     }
 })
 
-createApp(App).use(store).mount('#app')
+createApp(App)
+    .use(VuesticPlugin)
+    .use(store)
+    .mount('#app')

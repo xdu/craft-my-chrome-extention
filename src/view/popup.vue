@@ -1,69 +1,75 @@
 <template>
   <div class="main_app">
-    <h1>Hello {{ hello }}</h1>
-    <n-list bordered>
-      <n-list-item>
-        <n-card :bordered="false" hoverable size="small" title="Card" @click="greet">
-          Count : {{ count }} 
-        </n-card>
-      </n-list-item>
-      <n-list-item>
-        Item 2
-      </n-list-item>
-    </n-list>
-    <n-button bordered type="info">Button</n-button>
+    <h1>{{ hello }}</h1>
+    <va-list>
+      <va-list-label> List </va-list-label>
+      <va-list-item>
+        <va-list-item-section avatar>
+          <va-avatar>
+            <img src="https://randomuser.me/api/portraits/men/5.jpg" />
+          </va-avatar>
+        </va-list-item-section>
+        <va-list-item-section>
+          <va-list-item-label> Title {{ count }} </va-list-item-label>
+          <va-list-item-label caption :lines=2>
+            <div class="row">
+              <div class="flex xs6">
+                Lorem
+              </div>
+              <div class="flex xs6">
+                Description
+              </div>
+            </div>
+          </va-list-item-label>
+        </va-list-item-section>
+        <va-list-item-section icon>
+          <va-icon name="home" color="grey" />
+        </va-list-item-section>
+      </va-list-item>
+    </va-list>
+    <va-button :rounded="false" @click="greet">Click me</va-button>
   </div>
 </template>
 
 <script>
-
-import { NButton, NCard, NList, NListItem } from 'naive-ui'
-import { mapState } from 'vuex'
+import "vuestic-ui/dist/vuestic-ui.css";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
+import { mapState } from "vuex";
 
 export default {
-  components : {
-    NButton,
-    NCard,
-    NListItem,
-    NList
-  },
-  name: 'popup',
-  data () {
+  name: "popup",
+  data() {
     return {
-      msg: 'popup'
-    }
+      msg: "popup",
+    };
   },
   computed: {
     hello() {
-      return "Hello, " + this.msg
+      return "Hello, " + this.msg;
     },
     ...mapState({
-      count: state => state.count * 2
-    })
+      count: (state) => state.count,
+    }),
   },
   methods: {
     greet() {
-      this.$store.commit('increment')
-      console.log(this.$store.state.count)
-    }
-  }
-}
-
+      this.$store.commit("increment");
+    },
+  },
+};
 </script>
 
 <style>
 .main_app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
   width: 400px;
   height: 500px;
 }
-
-.n-list.n-list--bordered .n-list-item {
-    padding: 0;
+html body {
+  min-height: unset;
 }
 </style>
