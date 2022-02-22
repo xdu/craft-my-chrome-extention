@@ -27,14 +27,14 @@
         </va-list-item-section>
       </va-list-item>
     </va-list>
-    <va-button :rounded="false" @click="greet">Click me</va-button>
+    <va-button :rounded="false" @click="fetchFeed">Click me</va-button>
   </div>
 </template>
 
 <script>
 import "vuestic-ui/dist/vuestic-ui.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "popup",
@@ -55,6 +55,9 @@ export default {
     greet() {
       this.$store.commit("increment");
     },
+    ...mapActions([
+      'fetchFeed'
+    ])
   },
 };
 </script>
