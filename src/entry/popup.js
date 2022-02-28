@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 import { createRouter, createWebHashHistory} from 'vue-router'
 import { VuesticPlugin } from 'vuestic-ui'
 
-import App from '../view/popup.vue'
+import App from '../view/app.vue'
+import Popup from '../view/popup.vue'
 import Entry from '../view/post.vue'
 
 const store = createStore({
@@ -49,12 +50,8 @@ const store = createStore({
     }
 })
 
-const Home = { template: '<div>Home</div>' }
-const About = { template: '<div>About</div>' }
-
 const routes = [
-    { path: '/', component: Home },
-    { path: '/About', component: About },
+    { path: '/', component: Popup },
     { path: '/entry', component: Entry }
   ]
 
