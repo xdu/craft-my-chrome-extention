@@ -1,12 +1,16 @@
 import { createApp } from 'vue'
 import { createStore } from 'vuex'
-import App from '../view/popup.vue'
+import { createRouter, createWebHashHistory} from 'vue-router'
 import { VuesticPlugin } from 'vuestic-ui'
+
+import App from '../view/popup.vue'
+import Entry from '../view/post.vue'
 
 const store = createStore({
     state() {
         return {
-            count: 0
+            count: 0,
+            entries: []
         }
     },
     mutations: {
@@ -14,7 +18,7 @@ const store = createStore({
             state.count ++
         },
         feed(state, list) {
-            console.log(JSON.stringify(list))
+            state.entries = [...list]
         }
     },
     actions:{
@@ -45,7 +49,22 @@ const store = createStore({
     }
 })
 
+const Home = { template: '<div>Home</div>' }
+const About = { template: '<div>About</div>' }
+
+const routes = [
+    { path: '/', component: Home },
+    { path: '/About', component: About },
+    { path: '/entry', component: Entry }
+  ]
+
+  const router = createRouter({
+    history: createWebHashHistory(),
+    routes, // short for `routes: routes`
+  })
+
 createApp(App)
+    .use(router)
     .use(VuesticPlugin)
     .use(store)
     .mount('#app')

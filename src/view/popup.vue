@@ -2,32 +2,20 @@
   <div class="main_app">
     <h1>{{ hello }}</h1>
     <va-list>
-      <va-list-label> List </va-list-label>
-      <va-list-item>
-        <va-list-item-section avatar>
-          <va-avatar>
-            <img src="https://randomuser.me/api/portraits/men/5.jpg" />
-          </va-avatar>
-        </va-list-item-section>
+      <va-list-label>List</va-list-label>
+      <va-list-item v-for="entry in entries" :key="entry.id">
+        <router-link to="/entry">
         <va-list-item-section>
-          <va-list-item-label> Title {{ count }} </va-list-item-label>
+          <va-list-item-label>{{ entry.title }}</va-list-item-label>
           <va-list-item-label caption :lines=2>
-            <div class="row">
-              <div class="flex xs6">
-                Lorem
-              </div>
-              <div class="flex xs6">
-                Description
-              </div>
-            </div>
+            {{ entry.summary }}
           </va-list-item-label>
         </va-list-item-section>
-        <va-list-item-section icon>
-          <va-icon name="home" color="grey" />
-        </va-list-item-section>
+        </router-link>
       </va-list-item>
     </va-list>
     <va-button :rounded="false" @click="fetchFeed">Click me</va-button>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -49,6 +37,7 @@ export default {
     },
     ...mapState({
       count: (state) => state.count,
+      entries : (state) => state.entries
     }),
   },
   methods: {
