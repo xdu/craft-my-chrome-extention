@@ -5,7 +5,7 @@ import { VuesticPlugin } from 'vuestic-ui'
 
 import App from '../view/app.vue'
 import Popup from '../view/popup.vue'
-import Entry from '../view/post.vue'
+import Entry from '../view/entry.vue'
 
 const store = createStore({
     state() {
@@ -52,7 +52,7 @@ const store = createStore({
 
 const routes = [
     { path: '/', component: Popup },
-    { path: '/entry', component: Entry }
+    { path: '/entry/:id', name: 'entry', component: Entry }
   ]
 
   const router = createRouter({
