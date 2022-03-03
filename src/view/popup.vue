@@ -13,7 +13,7 @@
       </router-link>
     </va-list-item>
   </va-list>
-  <va-button :rounded="false" @click="fetchFeed">Click me</va-button>
+  <va-button :rounded="false" @click="fetchFeed">Update</va-button>
   <router-view></router-view>
 </template>
 
@@ -22,6 +22,11 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   name: "popup",
+
+  mounted() {
+    this.init()
+  },
+
   data() {
     return {
       msg: "popup",
@@ -40,7 +45,7 @@ export default {
     greet() {
       this.$store.commit("increment");
     },
-    ...mapActions(["fetchFeed"]),
+    ...mapActions(["fetchFeed", "init"]),
   },
 };
 </script>

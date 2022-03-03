@@ -23,6 +23,12 @@ const store = createStore({
         }
     },
     actions:{
+        init(context) {
+            chrome.storage.local.get(['entries'], (result) => {
+                context.commit('feed', result.entries)
+            })
+        },
+
         fetchFeed(context) {
             fetch('https://rss.dw.com/atom/rss-chi-all')
                 .then(resp => resp.text())
@@ -44,7 +50,9 @@ const store = createStore({
                         list.push(json)
                     }
 
-                    context.commit('feed', list)
+                    chrome.storage.local.set({ 'entries': list }, function(list) {
+                        context.commit('feed', list)
+                    })
                 })
         }
     }
