@@ -14,6 +14,9 @@
     </va-list-item>
   </va-list>
   <va-button :rounded="false" @click="fetchFeed">Update</va-button>
+  <router-link :to="{ name: 'feeds' }">
+    <va-button :rounded="false">Feeds</va-button>
+  </router-link>
   <router-view></router-view>
 </template>
 
@@ -24,7 +27,7 @@ export default {
   name: "popup",
 
   mounted() {
-    this.init()
+    this.init();
   },
 
   data() {

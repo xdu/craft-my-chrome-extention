@@ -6,6 +6,8 @@ import { VuesticPlugin } from 'vuestic-ui'
 import App from '../view/app.vue'
 import Popup from '../view/popup.vue'
 import Entry from '../view/entry.vue'
+import Feeds from '../view/feeds.vue'
+import Edit from '../view/edit.vue'
 
 const store = createStore({
     state() {
@@ -50,7 +52,7 @@ const store = createStore({
                         list.push(json)
                     }
 
-                    chrome.storage.local.set({ 'entries': list }, function(list) {
+                    chrome.storage.local.set({ 'entries': list }, function() {
                         context.commit('feed', list)
                     })
                 })
@@ -60,7 +62,9 @@ const store = createStore({
 
 const routes = [
     { path: '/', component: Popup },
-    { path: '/entry/:id', name: 'entry', component: Entry }
+    { path: '/entry/:id', name: 'entry', component: Entry },
+    { path: '/feeds', name: 'feeds', component: Feeds },
+    { path: '/edit', name: 'edit', component: Edit }
   ]
 
   const router = createRouter({
