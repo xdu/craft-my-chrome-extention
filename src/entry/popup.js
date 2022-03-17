@@ -13,7 +13,8 @@ const store = createStore({
     state() {
         return {
             count: 0,
-            entries: []
+            entries: [],
+            sources: []
         }
     },
     mutations: {
@@ -22,12 +23,44 @@ const store = createStore({
         },
         feed(state, list) {
             state.entries = [...list]
+        },
+        sources(state, list) {
+            state.sources = list
         }
     },
     actions:{
         init(context) {
-            chrome.storage.local.get(['entries'], (result) => {
+            chrome.storage.local.get(['entries', 'sources'], (result) => {
                 context.commit('feed', result.entries)
+                context.commit('sources', result.sources)
+            })
+        },
+
+        addFeed(context, url, name) {
+            let sources = []
+
+            chrome.storage.local.get(['sources'], (result) => {
+                if (result.sources) {
+                    sources = [... result.sources]
+                }
+
+                fetch(url)
+                .then(resp => resp.text())
+                .then(xml => {
+                    const parser = new DOMParser()
+                    const doc = parser.parseFromString(xml, 'text/xml')
+                    const title = doc.getElementsByTagName('title')[0].firstChild.nodeValue
+
+                    sources.push({ 
+                        id : "feed-" + Date.now(),
+                        url: url,
+                        title : name ? name : title
+                    })
+
+                    chrome.storage.local.set({ 'sources' : sources }, function() {
+                        context.commit('sources', sources)
+                    })
+                })
             })
         },
 

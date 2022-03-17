@@ -14,18 +14,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "feeds",
 
-  data() {
-    return {
-      feeds : [
-        {
-          id: 'http://rss.dw.com/atom/rss-chi-all',
-          title: 'Deutsche Welle: DW-WORLD.DE'
-        }
-      ]
-    }
+  computed: {
+    ...mapState({
+      feeds: (state) => state.sources,
+    })
   }
 };
 </script>>
