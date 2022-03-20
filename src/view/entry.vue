@@ -1,5 +1,7 @@
 <template>
-  <div>{{ content.summary }}</div>
+  <div>
+    <span v-html="content.summary"></span>
+  </div>
   <va-button :rounded="false" @click="back">Back</va-button>
 </template>
 
@@ -50,15 +52,19 @@ export default {
     },
 
     keypress(e) {
-      if (e.defaultPrevented) {
-        return; // Should do nothing if the default action has been cancelled
-      }
+      // if (e.defaultPrevented) {
+      //   return; // Should do nothing if the default action has been cancelled
+      // }
       if (e.code === "ArrowLeft") {
         this.back();
       } else if (e.code === "ArrowDown") {
+        e.preventDefault()
         this.next();
+        window.scrollTo({ top:0 })
       } else if (e.code == "ArrowUp") {
+        e.preventDefault()
         this.prev();
+        window.scrollTo({ top:0 })
       }
     },
   },

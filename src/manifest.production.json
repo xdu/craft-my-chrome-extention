@@ -8,5 +8,12 @@
     },
     "permissions": [
         "storage"
+    ],
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "host_permissions": [
+        "http://*/",
+        "https://*/"
     ]
 }

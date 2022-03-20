@@ -7,7 +7,7 @@
         <va-list-item-section>
           <va-list-item-label>{{ entry.title }}</va-list-item-label>
           <va-list-item-label caption :lines="2">
-            {{ entry.summary }}
+            <span v-html="entry.summary"></span>
           </va-list-item-label>
         </va-list-item-section>
       </router-link>

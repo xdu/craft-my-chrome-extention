@@ -24,4 +24,8 @@ export default {};
 html body {
   min-height: unset;
 }
+img {
+  height: auto !important;
+  max-width: 100% !important;
+}
 </style>

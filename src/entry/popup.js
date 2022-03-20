@@ -36,59 +36,32 @@ const store = createStore({
             })
         },
 
-        addFeed(context, url, name) {
-            let sources = []
-
+        updateFeed(context, payload) {
+            
             chrome.storage.local.get(['sources'], (result) => {
-                if (result.sources) {
-                    sources = [... result.sources]
+
+                let sources = []
+                if (! result.sources) {
+                    sources = [{ url: payload.url, title: payload.title }]
+                } else if (! result.sources.find(e => e.url === payload.url)) {
+                    sources = result.sources.push({ url: payload.url, title: payload.title })
                 }
 
-                fetch(url)
-                .then(resp => resp.text())
-                .then(xml => {
-                    const parser = new DOMParser()
-                    const doc = parser.parseFromString(xml, 'text/xml')
-                    const title = doc.getElementsByTagName('title')[0].firstChild.nodeValue
-
-                    sources.push({ 
-                        id : "feed-" + Date.now(),
-                        url: url,
-                        title : name ? name : title
-                    })
-
-                    chrome.storage.local.set({ 'sources' : sources }, function() {
-                        context.commit('sources', sources)
-                    })
+                chrome.storage.local.set({ 'sources' : sources }, function() {
+                    context.commit('sources', sources)
                 })
+
+                chrome.storage.local.set({ 'entries' : payload.entries }, function() {
+                    context.commit('feed', payload.entries)
+                })
+
             })
         },
 
         fetchFeed(context) {
-            fetch('https://rss.dw.com/atom/rss-chi-all')
-                .then(resp => resp.text())
-                .then(xml => {
-                    const parser = new DOMParser()
-                    const doc = parser.parseFromString(xml, 'text/xml')
-                    const list = []
-
-                    const entries = doc.getElementsByTagName('entry')
-                    for(let i = 0; i < entries.length; i ++) {
-
-                        const entry = entries[i]
-                        const json = {}
-
-                        json.id = entry.getElementsByTagName('id')[0].firstChild.nodeValue
-                        json.title = entry.getElementsByTagName('title')[0].firstChild.nodeValue
-                        json.summary = entry.getElementsByTagName('summary')[0].firstChild.nodeValue
-
-                        list.push(json)
-                    }
-
-                    chrome.storage.local.set({ 'entries': list }, function() {
-                        context.commit('feed', list)
-                    })
-                })
+            chrome.storage.local.set({ 'entries': [] }, function() {
+                context.commit('feed', [])
+            })
         }
     }
 })
