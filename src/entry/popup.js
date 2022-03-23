@@ -44,7 +44,8 @@ const store = createStore({
                 if (! result.sources) {
                     sources = [{ url: payload.url, title: payload.title }]
                 } else if (! result.sources.find(e => e.url === payload.url)) {
-                    sources = result.sources.push({ url: payload.url, title: payload.title })
+                    sources = [... result.sources]
+                    sources.push({ url: payload.url, title: payload.title })
                 }
 
                 chrome.storage.local.set({ 'sources' : sources }, function() {
