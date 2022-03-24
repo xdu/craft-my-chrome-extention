@@ -53,26 +53,23 @@ function parseATOM1(doc) {
 }
 
 chrome.runtime.onMessage.addListener(
-    function (request, user, sendResponse) {
-        console.log("Request: " + request.action)
+    function (request, sender, sendResponse) {
+        console.log("Request: " + request.action + ", " + sender)
 
         if (request.action == "feed") {
             fetch(request.url)
-                .then(resp => resp.text())
-                .then(xml => {
-                    const doc = new DOMParser().parseFromString(xml, 'text/xml')
+            .then(resp => resp.text())
+            .then(xml => {
+                const doc = new DOMParser().parseFromString(xml, 'text/xml')
 
-                    if (doc.getElementsByTagName('rss').length > 0) {
-                        sendResponse( parseRSS2(doc) )
-                    }
-                    else if (doc.getElementsByTagName('feed').length > 0) {
-                        sendResponse( parseATOM1(doc) )
-                    }
-                    else {
-                        sendResponse( {} )
-                    }
-                })
-            return true
-            }
+                if (doc.getElementsByTagName('rss').length > 0) {
+                    sendResponse( parseRSS2(doc) )
+                }
+                else if (doc.getElementsByTagName('feed').length > 0) {
+                    sendResponse( parseATOM1(doc) )
+                }
+            })
         }
+        return true;
+    }
 );

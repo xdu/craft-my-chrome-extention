@@ -1,5 +1,4 @@
 <template>
-  <h1>{{ hello }}</h1>
   <va-list>
     <va-list-label>List</va-list-label>
     <va-list-item v-for="entry in entries" :key="entry.id">
@@ -36,18 +35,12 @@ export default {
     };
   },
   computed: {
-    hello() {
-      return "Hello, " + this.msg;
-    },
     ...mapState({
       count: (state) => state.count,
       entries: (state) => state.entries,
     }),
   },
   methods: {
-    greet() {
-      this.$store.commit("increment");
-    },
     ...mapActions(["fetchFeed", "init"]),
   },
 };

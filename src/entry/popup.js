@@ -25,7 +25,7 @@ const store = createStore({
             state.entries = [...list]
         },
         sources(state, list) {
-            state.sources = list
+            state.sources = [...list]
         }
     },
     actions:{
