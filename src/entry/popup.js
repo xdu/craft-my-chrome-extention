@@ -4,7 +4,7 @@ import { createRouter, createWebHashHistory} from 'vue-router'
 import { VuesticPlugin } from 'vuestic-ui'
 
 import App from '../view/app.vue'
-import Feed from '../view/popup.vue'
+import Feed from '../view/feed.vue'
 import Entry from '../view/entry.vue'
 import Feeds from '../view/feeds.vue'
 import Edit from '../view/edit.vue'
@@ -81,7 +81,6 @@ const routes = [
     { path: '/', component: Feeds },
     { path: '/feed/:id', name: 'feed', component: Feed},
     { path: '/entry/:id', name: 'entry', component: Entry },
-    { path: '/feeds', name: 'feeds', component: Feeds },
     { path: '/edit', name: 'edit', component: Edit }
   ]
 
