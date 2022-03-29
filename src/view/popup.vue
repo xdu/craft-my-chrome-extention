@@ -1,4 +1,5 @@
 <template>
+  <span>{{ this.$route.params.id }}</span>
   <va-list>
     <va-list-label>List</va-list-label>
     <va-list-item v-for="entry in entries" :key="entry.id">
@@ -13,35 +14,25 @@
     </va-list-item>
   </va-list>
   <va-button :rounded="false" @click="fetchFeed">Update</va-button>
-  <router-link :to="{ name: 'feeds' }">
-    <va-button :rounded="false">Feeds</va-button>
-  </router-link>
-  <router-view></router-view>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "popup",
+  name: "entries",
 
   mounted() {
-    this.init();
+    this.fetchFeed(this.$route.params.id)
   },
 
-  data() {
-    return {
-      msg: "popup",
-    };
-  },
   computed: {
     ...mapState({
-      count: (state) => state.count,
       entries: (state) => state.entries,
     }),
   },
   methods: {
-    ...mapActions(["fetchFeed", "init"]),
+    ...mapActions(["fetchFeed"]),
   },
 };
 </script>
