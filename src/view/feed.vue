@@ -3,7 +3,7 @@
   <va-list>
     <va-list-label>List</va-list-label>
     <va-list-item v-for="entry in entries" :key="entry.id">
-      <router-link :to="{ name: 'entry', params: { id: entry.id } }">
+      <router-link :to="{ name: 'entry', params: { id: entry.id, feed: this.$route.params.id } }">
         <va-list-item-section>
           <va-list-item-label>{{ entry.title }}</va-list-item-label>
           <va-list-item-label caption :lines="2">
