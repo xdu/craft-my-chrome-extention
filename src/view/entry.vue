@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div>{{ source }}</div>
-    <p><span>{{ content.title }}</span></p>
-    <p>{{ pubDate }}</p>
-    <span v-html="content.summary"></span>
+  <div class="entry">
+    <div class='entry_source'>{{ source }}</div>
+    <div class='entry_title'>{{ content.title }}</div>
+    <div class='entry_date'>{{ pubDate }}</div>
+    <div class='entry_content' v-html="content.summary"></div>
   </div>
   <va-button :rounded="false" @click="back">Back</va-button>
 </template>
@@ -84,3 +84,32 @@ export default {
   },
 };
 </script>
+
+<style>
+.entry {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.entry_source {
+  font-size: 0.7rem;
+  margin-block-end: 2em;
+}
+
+.entry_title {
+  font-size: 1.25rem;
+  margin-block-end: 2em;
+}
+
+.entry_date {
+  font-size: 0.7rem;
+  margin-block-end: 2em;
+}
+
+.entry_content {
+  margin-block-end: 2em;
+}
+
+</style>

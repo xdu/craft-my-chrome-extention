@@ -13,7 +13,11 @@ function parseRSS2(doc) {
 
         json.id = entry.getElementsByTagName('guid')[0].firstChild.nodeValue
         json.title = entry.getElementsByTagName('title')[0].firstChild.nodeValue
-        json.summary = entry.getElementsByTagName('description')[0].firstChild.nodeValue
+        if (entry.getElementsByTagName('content:encoded').length > 0) {
+            json.summary = entry.getElementsByTagName('content:encoded')[0].firstChild.nodeValue
+        } else {
+            json.summary = entry.getElementsByTagName('description')[0].firstChild.nodeValue
+        }
         json.date = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
 
         list.push(json)

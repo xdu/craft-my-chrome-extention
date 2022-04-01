@@ -39,7 +39,7 @@ const store = createStore({
             
             chrome.storage.local.get(['sources'], (result) => {
 
-                let ident = Date.now()
+                let ident = Date.now().toString()
 
                 if (! result.sources) {
                     let sources = [{ 

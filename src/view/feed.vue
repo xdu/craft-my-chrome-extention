@@ -1,14 +1,10 @@
 <template>
-  <span>{{ this.$route.params.id }}</span>
   <va-list>
-    <va-list-label>List</va-list-label>
+    <va-list-label>{{ title }}</va-list-label>
     <va-list-item v-for="entry in entries" :key="entry.id">
       <router-link :to="{ name: 'entry', params: { id: entry.id, feed: this.$route.params.id } }">
         <va-list-item-section>
-          <va-list-item-label>{{ entry.title }}</va-list-item-label>
-          <va-list-item-label caption :lines="2">
-            <span v-html="entry.summary"></span>
-          </va-list-item-label>
+          <va-list-item-label :lines="2">{{ entry.title }}</va-list-item-label>
         </va-list-item-section>
       </router-link>
     </va-list-item>
@@ -27,8 +23,16 @@ export default {
   },
 
   computed: {
+
+    title() {
+      let feedId = this.$route.params.id 
+      let feed = this.sources.find(e => e.id === feedId)
+      return feed ? feed.title : "List"
+    },
+
     ...mapState({
       entries: (state) => state.entries,
+      sources: (state) => state.sources
     }),
   },
   methods: {
