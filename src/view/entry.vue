@@ -2,7 +2,7 @@
   <div class="entry">
     <div class='entry_source'>{{ source }}</div>
     <div class='entry_title'>{{ content.title }}</div>
-    <div class='entry_date'>{{ pubDate }}</div>
+    <div class='entry_date'>{{ content.date }}</div>
     <div class='entry_content' v-html="content.summary"></div>
   </div>
   <va-button :rounded="false" @click="back">Back</va-button>
@@ -37,10 +37,6 @@ export default {
       entries: (state) => state.entries,
       sources: (state) => state.sources
     }),
-
-    pubDate() {
-      return new Date(this.entries[this.index].date)
-    },
 
     content() {
       return this.entries[this.index]

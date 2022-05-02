@@ -5,6 +5,7 @@
       <router-link :to="{ name: 'entry', params: { id: entry.id, feed: this.$route.params.id } }">
         <va-list-item-section>
           <va-list-item-label :lines="2">{{ entry.title }}</va-list-item-label>
+          <va-list-item-label caption>{{ dayjs(entry.date).fromNow() }}</va-list-item-label>
         </va-list-item-section>
       </router-link>
     </va-list-item>
@@ -14,9 +15,16 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from 'dayjs'
 
 export default {
   name: "feed",
+
+  created() {
+    dayjs.extend(relativeTime);
+    this.dayjs = dayjs
+  },
 
   mounted() {
     this.fetchFeed(this.$route.params.id)

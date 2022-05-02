@@ -18,7 +18,8 @@ function parseRSS2(doc) {
         } else {
             json.summary = entry.getElementsByTagName('description')[0].firstChild.nodeValue
         }
-        json.date = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
+        const eDate = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
+        json.date = new Date(eDate)
 
         list.push(json)
     }
@@ -46,7 +47,8 @@ function parseATOM1(doc) {
         } else {
             json.summary = entry.getElementsByTagName('summary')[0].firstChild.nodeValue
         }
-        json.date = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
+        const eDate = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
+        json.date = new Date(eDate)
 
         list.push(json)
     }
