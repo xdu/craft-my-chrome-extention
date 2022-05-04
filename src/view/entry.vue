@@ -1,6 +1,6 @@
 <template>
   <div class="entry">
-    <div class='entry_source'>{{ source }}</div>
+    <div class='entry_source'>{{ content.source }}</div>
     <div class='entry_title'>{{ content.title }}</div>
     <div class='entry_date'>{{ content.date }}</div>
     <div class='entry_content' v-html="content.summary"></div>
@@ -25,7 +25,6 @@ export default {
     window.addEventListener("keydown", this.keypress);
 
     this.index = this.entries.findIndex(entry => entry.id === this.$route.params.id);
-    this.feed = this.sources.find(feed => feed.id.toString() === this.$route.params.feed)
   },
 
   unmounted() {
@@ -35,16 +34,11 @@ export default {
   computed: {
     ...mapState({
       entries: (state) => state.entries,
-      sources: (state) => state.sources
     }),
 
     content() {
       return this.entries[this.index]
     },
-
-    source() {
-      return this.feed ? this.feed.title : ""
-    }
   },
 
   methods: {

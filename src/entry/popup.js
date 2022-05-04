@@ -6,22 +6,22 @@ import { VuesticPlugin } from 'vuestic-ui'
 import App from '../view/app.vue'
 import Feed from '../view/feed.vue'
 import Entry from '../view/entry.vue'
-import Feeds from '../view/feeds.vue'
+//import Feeds from '../view/feeds.vue'
 import Edit from '../view/edit.vue'
 
 const store = createStore({
+    //
+    // Store has two lists, one to store feeds, one to store all the articles
+    //
     state() {
         return {
-            count: 0,
             entries: [],
             sources: []
         }
     },
     mutations: {
-        increment(state) {
-            state.count ++
-        },
-        feed(state, list) {
+        
+        articles(state, list) {
             state.entries = [...list]
         },
         sources(state, list) {
@@ -29,56 +29,67 @@ const store = createStore({
         }
     },
     actions:{
+        //
+        // Load all the feed sources to store
+        //
         init(context) {
             chrome.storage.local.get(['sources'], (result) => {
                 context.commit('sources', result.sources)
             })
         },
 
+        //
+        // Save a feed source with its articles in payload to local storage 
+        // 
         updateFeed(context, payload) {
             
             chrome.storage.local.get(['sources'], (result) => {
-
-                let ident = Date.now().toString()
-
+                
                 if (! result.sources) {
+                    //
+                    // The storage has no feed yet
+                    //
                     let sources = [{ 
-                        id : ident,
-                        url: payload.url, 
-                        title: payload.title
+                        url: payload.url, title: payload.title
                     }]
                     chrome.storage.local.set({ 'sources' : sources }, function() {
                         context.commit('sources', sources)
                     })
                 } else if (! result.sources.find(e => e.url === payload.url)) {
+                    //
+                    // The storage is not empty and doesn't contain current feed
+                    //
                     let sources = [... result.sources]
                     sources.push({ 
-                        id: ident,
                         url: payload.url, title: payload.title 
                     })
                     chrome.storage.local.set({ 'sources' : sources }, function() {
                         context.commit('sources', sources)
                     })
                 }
-
-                chrome.storage.local.set({ [ident] : payload.entries }, function() {
-                    context.commit('feed', payload.entries)
+                //
+                // TODO : Merge the articles
+                //
+                chrome.storage.local.set({ 'articles' : payload.entries }, function() {
+                    context.commit('articles', payload.entries)
                 })
 
             })
         },
 
-        fetchFeed(context, id) {
-            console.log("fetching feed " + id)
-            chrome.storage.local.get([id], function(result) {
-                context.commit('feed', result[id])
+        //
+        // Load all the articles from the local storage to vuex store.
+        // 
+        fetchFeed(context) {
+            chrome.storage.local.get('articles', function(result) {
+                context.commit('articles', result.articles)
             })
         }
     }
 })
 
 const routes = [
-    { path: '/', component: Feeds },
+    { path: '/', component: Feed },
     { path: '/feed/:id', name: 'feed', component: Feed},
     { path: '/entry/:id', name: 'entry', component: Entry },
     { path: '/edit', name: 'edit', component: Edit }

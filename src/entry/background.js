@@ -13,6 +13,8 @@ function parseRSS2(doc) {
 
         json.id = entry.getElementsByTagName('guid')[0].firstChild.nodeValue
         json.title = entry.getElementsByTagName('title')[0].firstChild.nodeValue
+        json.source = title
+
         if (entry.getElementsByTagName('content:encoded').length > 0) {
             json.summary = entry.getElementsByTagName('content:encoded')[0].firstChild.nodeValue
         } else {
@@ -42,6 +44,8 @@ function parseATOM1(doc) {
 
         json.id = entry.getElementsByTagName('guid')[0].firstChild.nodeValue
         json.title = entry.getElementsByTagName('title')[0].firstChild.nodeValue
+        json.source = title
+
         if (entry.getElementsByTagName('content').length > 0) {
             json.summary = entry.getElementsByTagName('content')[0].firstChild.nodeValue
         } else {
