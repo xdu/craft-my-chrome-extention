@@ -21,7 +21,7 @@ function parseRSS2(doc) {
             json.summary = entry.getElementsByTagName('description')[0].firstChild.nodeValue
         }
         const eDate = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
-        json.date = new Date(eDate)
+        json.date = new Date(eDate).getTime()
 
         list.push(json)
     }
@@ -52,7 +52,7 @@ function parseATOM1(doc) {
             json.summary = entry.getElementsByTagName('summary')[0].firstChild.nodeValue
         }
         const eDate = entry.getElementsByTagName('pubDate')[0].firstChild.nodeValue
-        json.date = new Date(eDate)
+        json.date = new Date(eDate).getTime()
 
         list.push(json)
     }

@@ -2,7 +2,7 @@
   <div class="entry">
     <div class='entry_source'>{{ content.source }}</div>
     <div class='entry_title'>{{ content.title }}</div>
-    <div class='entry_date'>{{ content.date }}</div>
+    <div class='entry_date'>{{ displayDate }}</div>
     <div class='entry_content' v-html="content.summary"></div>
   </div>
   <va-button :rounded="false" @click="back">Back</va-button>
@@ -10,6 +10,7 @@
 
 <script>
 import { mapState } from "vuex";
+import dayjs from 'dayjs'
 
 export default {
   name: "entry",
@@ -39,6 +40,10 @@ export default {
     content() {
       return this.entries[this.index]
     },
+
+    displayDate() {
+      return dayjs(this.content.date)
+    }
   },
 
   methods: {

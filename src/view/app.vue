@@ -19,7 +19,7 @@ export default {};
   color: #2c3e50;
   margin-top: 5px;
   width: 400px;
-  height: 500px;
+  height: 420px;
 }
 html body {
   min-height: unset;

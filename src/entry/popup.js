@@ -15,6 +15,7 @@ const store = createStore({
     //
     state() {
         return {
+            url: '',
             entries: [],
             sources: []
         }
@@ -22,10 +23,14 @@ const store = createStore({
     mutations: {
         
         articles(state, list) {
-            state.entries = [...list]
+            if (list) {
+                state.entries = [...list]
+            }            
         },
         sources(state, list) {
-            state.sources = [...list]
+            if (list) {
+                state.sources = [...list]
+            }
         }
     },
     actions:{
@@ -36,6 +41,10 @@ const store = createStore({
             chrome.storage.local.get(['sources'], (result) => {
                 context.commit('sources', result.sources)
             })
+        },
+
+        updateSources(context, payload) {
+            context.commit('sources', payload.sources)
         },
 
         //
@@ -70,6 +79,11 @@ const store = createStore({
                 //
                 // TODO : Merge the articles
                 //
+
+                payload.entries.sort(function(a, b) {
+                    return (b.date - a.date)
+                })
+
                 chrome.storage.local.set({ 'articles' : payload.entries }, function() {
                     context.commit('articles', payload.entries)
                 })
@@ -89,8 +103,7 @@ const store = createStore({
 })
 
 const routes = [
-    { path: '/', component: Feed },
-    { path: '/feed/:id', name: 'feed', component: Feed},
+    { path: '/', name: 'feed', component: Feed },
     { path: '/entry/:id', name: 'entry', component: Entry },
     { path: '/edit', name: 'edit', component: Edit }
   ]
