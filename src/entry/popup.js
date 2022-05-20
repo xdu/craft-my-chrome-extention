@@ -38,8 +38,9 @@ const store = createStore({
         // Load all the feed sources to store
         //
         init(context) {
-            chrome.storage.local.get(['sources'], (result) => {
+            chrome.storage.local.get(['sources', 'articles'], (result) => {
                 context.commit('sources', result.sources)
+                context.commit('articles', result.articles)
             })
         },
 
@@ -104,12 +105,10 @@ const store = createStore({
         },
 
         //
-        // Load all the articles from the local storage to vuex store.
-        // 
-        fetchFeed(context) {
-            chrome.storage.local.get('articles', function(result) {
-                context.commit('articles', result.articles)
-            })
+        // Save all the articles to vuex store
+        //
+        updateArticles(context, articles) {
+            context.commit('articles', articles)
         }
     }
 })

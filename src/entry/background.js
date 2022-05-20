@@ -9,7 +9,7 @@ function parseRSS2(doc) {
     for(let i = 0; i < entries.length; i ++) {
 
         const entry = entries[i]
-        const json = {}
+        const json = { read: false }
 
         json.id = entry.getElementsByTagName('guid')[0].firstChild.nodeValue
         json.title = entry.getElementsByTagName('title')[0].firstChild.nodeValue
@@ -40,7 +40,7 @@ function parseATOM1(doc) {
     for(let i = 0; i < entries.length; i ++) {
 
         const entry = entries[i]
-        const json = {}
+        const json = { read: false }
 
         json.id = entry.getElementsByTagName('guid')[0].firstChild.nodeValue
         json.title = entry.getElementsByTagName('title')[0].firstChild.nodeValue

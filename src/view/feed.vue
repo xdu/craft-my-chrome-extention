@@ -25,7 +25,7 @@
         }"
       >
         <va-list-item-section>
-          <va-list-item-label :lines="2">{{ e.title }}</va-list-item-label>
+          <va-list-item-label :lines="2" :style="{ 'font-weight': e.read ? 400 : 600}">{{ e.title }}</va-list-item-label>
           <va-list-item-label caption>{{
             dayjs(e.date).fromNow()
           }}</va-list-item-label>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 
@@ -48,18 +48,10 @@ export default {
     this.dayjs = dayjs;
   },
 
-  mounted() {
-    this.fetchFeed();
-  },
-
   computed: {
     ...mapState({
       articles: (state) => state.entries,
     }),
-  },
-
-  methods: {
-    ...mapActions(["fetchFeed"]),
   },
 };
 </script>

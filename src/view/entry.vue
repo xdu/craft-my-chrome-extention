@@ -1,15 +1,14 @@
 <template>
-  <div class="entry">
-    <div class='entry_source'>{{ content.source }}</div>
+  <div class="entry"> 
+    <div class='entry_source'><va-button @click="back" size="small" icon="reply"/>{{ content.source }}</div>
     <div class='entry_title'>{{ content.title }}</div>
     <div class='entry_date'>{{ displayDate }}</div>
     <div class='entry_content' v-html="content.summary"></div>
   </div>
-  <va-button :rounded="false" @click="back">Back</va-button>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import dayjs from 'dayjs'
 
 export default {
@@ -26,10 +25,12 @@ export default {
     window.addEventListener("keydown", this.keypress);
 
     this.index = this.entries.findIndex(entry => entry.id === this.$route.params.id);
+    this.entries[this.index].read = true
   },
 
   unmounted() {
     window.removeEventListener("keydown", this.keypress);
+    this.updateArticles(this.entries)
   },
 
   computed: {
@@ -48,12 +49,20 @@ export default {
 
   methods: {
 
+    ... mapActions([ "updateArticles" ]),
+
     next() {
-      if (this.index < this.entries.length - 1) this.index ++
+      if (this.index < this.entries.length - 1) {
+        this.index ++
+        this.entries[this.index].read = true
+      }
     },
 
     prev() {
-      if (this.index > 0) this.index --
+      if (this.index > 0) {
+        this.index --
+        this.entries[this.index].read = true
+      }
     },
 
     back() {

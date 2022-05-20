@@ -3,42 +3,33 @@
     <va-list>
       <va-list-label> Feeds URL </va-list-label>
       <va-list-item v-for="item in feeds" :key="item.index">
-        <va-checkbox v-model="item.active"/>
+        <va-checkbox v-model="item.active" />
         <va-list-item-section>
           <va-input label="URL" v-model="item.url" />
         </va-list-item-section>
         <va-button-group>
-            <va-button icon="close" size="small" @click="remove(item)"/>
-            <va-button icon="refresh" size="small" @click="refresh(item)" />
-          </va-button-group>
+          <va-button icon="close" size="small" @click="remove(item)" />
+          <va-button icon="refresh" size="small" @click="refresh(item)" />
+        </va-button-group>
       </va-list-item>
       <va-list-label>
-        <va-button @click="add" icon="add" size="small" />
+        <router-link :to="{ name: 'feed' }">
+          <va-button icon="reply" size="small">Back</va-button>
+        </router-link>
+        <va-button @click="add" icon="add" size="small">Add</va-button>
       </va-list-label>
     </va-list>
-
-    <va-input label="URL" v-model="url" />
-    <va-button-group>
-      <va-button type="submit"><va-icon name="save" size="small" /></va-button>
-      <router-link :to="{ name: 'feed' }">
-        <va-button><va-icon name="close" size="small" /></va-button>
-      </router-link>
-    </va-button-group>
   </va-form>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
       url: "",
     };
-  },
-
-  mounted() {
-    this.init()
   },
 
   computed: {
@@ -49,20 +40,18 @@ export default {
 
   methods: {
 
-    ...mapActions(["init"]),
-
     remove(item) {
-      const idx = this.feeds.findIndex((e) => e.id === item.id)
-      console.log("remove item : " + idx)
+      const idx = this.feeds.findIndex((e) => e.id === item.id);
+      console.log("remove item : " + idx);
       if (idx !== -1) {
-        this.feeds.splice(idx, 1)
-        this.save()
+        this.feeds.splice(idx, 1);
+        this.save();
       }
     },
 
     add() {
       this.feeds.push({ url: "", active: true, id: Date.now() });
-      this.save()
+      this.save();
     },
 
     save() {

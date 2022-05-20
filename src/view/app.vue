@@ -7,8 +7,17 @@
 <script>
 import "vuestic-ui/dist/vuestic-ui.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import { mapActions } from "vuex";
 
-export default {};
+export default {
+  mounted() {
+    this.init();
+  },
+
+  methods: {
+    ...mapActions(["init"]),
+  },
+};
 </script>
 
 <style>
