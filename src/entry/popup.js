@@ -77,17 +77,29 @@ const store = createStore({
                     })
                 }
                 //
-                // TODO : Merge the articles
+                // Merge the articles
                 //
+                console.log(payload.entries.length + " new articles fetched.")
+                
+                chrome.storage.local.get('articles', function(result) {
 
-                payload.entries.sort(function(a, b) {
-                    return (b.date - a.date)
+                    for(let i = 0; i < payload.entries.length; i ++) {
+                        const curr = payload.entries[i].id
+
+                        if (! result.articles.find( e => e.id === curr)) {
+                            result.articles.push( payload.entries[i] )
+                        }
+                    }
+
+                    result.articles.sort(function(a, b) {
+                        return (b.date - a.date)
+                    })
+
+                    chrome.storage.local.set({ 'articles' : result.articles }, function() {
+                        context.commit('articles', result.articles)
+                    })
+
                 })
-
-                chrome.storage.local.set({ 'articles' : payload.entries }, function() {
-                    context.commit('articles', payload.entries)
-                })
-
             })
         },
 

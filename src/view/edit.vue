@@ -3,18 +3,21 @@
     <va-list>
       <va-list-label> Feeds URL </va-list-label>
       <va-list-item v-for="item in feeds" :key="item.index">
+        <va-checkbox v-model="item.active"/>
         <va-list-item-section>
           <va-input label="URL" v-model="item.url" />
         </va-list-item-section>
+        <va-button-group>
+            <va-button icon="close" size="small" @click="remove(item)"/>
+            <va-button icon="refresh" size="small" @click="refresh(item)" />
+          </va-button-group>
       </va-list-item>
       <va-list-label>
-        <va-button @click="add">
-          <va-icon name="add" size="small" />
-        </va-button>
+        <va-button @click="add" icon="add" size="small" />
       </va-list-label>
     </va-list>
 
-  <va-input label="URL" v-model="url" />
+    <va-input label="URL" v-model="url" />
     <va-button-group>
       <va-button type="submit"><va-icon name="save" size="small" /></va-button>
       <router-link :to="{ name: 'feed' }">
@@ -25,14 +28,17 @@
 </template>
 
 <script>
-
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      url: ""
+      url: "",
     };
+  },
+
+  mounted() {
+    this.init()
   },
 
   computed: {
@@ -43,16 +49,54 @@ export default {
 
   methods: {
 
+    ...mapActions(["init"]),
+
+    remove(item) {
+      const idx = this.feeds.findIndex((e) => e.id === item.id)
+      console.log("remove item : " + idx)
+      if (idx !== -1) {
+        this.feeds.splice(idx, 1)
+        this.save()
+      }
+    },
+
     add() {
-      this.feeds.push({ url : '' })
+      this.feeds.push({ url: "", active: true, id: Date.now() });
+      this.save()
+    },
+
+    save() {
+      this.$store.dispatch({
+        type: "updateSources",
+        sources: this.feeds,
+      });
+    },
+
+    refresh(item) {
+      const self = this;
+
+      chrome.runtime.sendMessage(
+        {
+          action: "feed",
+          url: item.url,
+          title: item.url,
+        },
+        function (response) {
+          console.log("response function called.");
+          if (response) {
+            self.$store.dispatch({
+              type: "updateFeed",
+              url: response.url,
+              title: response.title,
+              entries: response.entries,
+            });
+          }
+        }
+      );
     },
 
     checkFeedUrl() {
       const self = this;
-
-      self.$store.dispatch({
-        type: "updateSources", sources: this.feeds
-      })
 
       chrome.runtime.sendMessage(
         {

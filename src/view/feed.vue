@@ -33,10 +33,6 @@
       </router-link>
     </va-list-item>
   </va-list>
-  <va-button :rounded="false" @click="fetchFeed">Update</va-button>
-  <router-link :to="{ name: 'edit' }">
-    <va-button :rounded="false">Add</va-button>
-  </router-link>
 </template>
 
 <script>
