@@ -1,15 +1,18 @@
 <template>
-  <va-form tag="form" @submit.prevent="checkFeedUrl">
+  <va-form tag="form">
     <va-list>
       <va-list-label> Feeds URL </va-list-label>
       <va-list-item v-for="item in feeds" :key="item.index">
         <va-checkbox v-model="item.active" />
         <va-list-item-section>
           <va-input label="URL" v-model="item.url" />
+          <va-list-item-label caption>
+            {{ dayjs(item.lastUpdate).format() }}
+          </va-list-item-label>
         </va-list-item-section>
         <va-button-group>
           <va-button icon="close" size="small" @click="remove(item)" />
-          <va-button icon="refresh" size="small" @click="refresh(item)" />
+          <va-button icon="refresh" size="small" @click.prevent="refresh(item)" />
         </va-button-group>
       </va-list-item>
       <va-list-label>
@@ -24,12 +27,17 @@
 
 <script>
 import { mapState } from "vuex";
+import dayjs from 'dayjs'
 
 export default {
   data() {
     return {
       url: "",
     };
+  },
+  
+  created() {
+    this.dayjs = dayjs;
   },
 
   computed: {
@@ -62,8 +70,8 @@ export default {
     },
 
     refresh(item) {
-      const self = this;
 
+      const self = this;
       chrome.runtime.sendMessage(
         {
           action: "feed",
@@ -84,29 +92,6 @@ export default {
       );
     },
 
-    checkFeedUrl() {
-      const self = this;
-
-      chrome.runtime.sendMessage(
-        {
-          action: "feed",
-          url: self.url,
-          title: self.title,
-        },
-        function (response) {
-          console.log("response function called.");
-          if (response) {
-            self.$store.dispatch({
-              type: "updateFeed",
-              url: response.url,
-              title: response.title,
-              entries: response.entries,
-            });
-            self.$router.back();
-          }
-        }
-      );
-    },
   },
 };
 </script>
